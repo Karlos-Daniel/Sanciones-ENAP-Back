@@ -1,16 +1,16 @@
 const { response, request } = require("express");
-const { Duracion } = require('../models');
+const { Tipo_sancion} = require('../models');
 const {validationResult} = require('express-validator');
 const moment = require('moment')
 
-const duracionPost = async (req = request, res = response) => {
+const tipo_sancionPost = async (req = request, res = response) => {
     try {
         const {
             descripcion
         } = req.body
  
-        const duracionValidas = [1,2,3,4,5,6,7,8,"DIA"]
-        if(!duracionValidas.includes(descripcion)){
+        const tipo_sancionValidas = [1,2,3,4,5,6,7,8,"DIA"]
+        if(!tipo_sancionValidas.includes(descripcion)){
             return res.status(400).json({errores:
                 [{msg:'no es una duracion valida'}]
             })
@@ -22,9 +22,9 @@ const duracionPost = async (req = request, res = response) => {
             descripcion
         }
 
-        const duracion = new Duracion(data)
+        const tipo = new Tipo_sancion(data)
 
-        await duracion.save()
+        await tipo.save()
 
         return res.status(201).json({
             msg:'duracion creado con exito'
@@ -39,7 +39,7 @@ const duracionPost = async (req = request, res = response) => {
 }
 
 //editar
-const duracionPut = async (req = request, res = response) => {
+const tipo_sancionPut = async (req = request, res = response) => {
     try {
 
         const { _id } = req.params;
@@ -61,7 +61,7 @@ const duracionPut = async (req = request, res = response) => {
             descripcion
         }
 
-       await Duracion.findByIdAndUpdate(_id,data)
+       await Tipo_sancion.findByIdAndUpdate(_id,data)
 
         return res.status(201).json({
             msg:'Rol modificada con exito'
@@ -76,12 +76,12 @@ const duracionPut = async (req = request, res = response) => {
 }
 
 //borrar
-const duracionDelete = async (req = request, res = response) => {
+const tipo_sancionDelete = async (req = request, res = response) => {
 
     try {
         const { _id } = req.params;
 
-        await Compania.findByIdAndDelete(_id);
+        await Tipo_sancion.findByIdAndDelete(_id);
 
         return res.status(200).json({
             msg: `Rol borrada con exito`
@@ -97,13 +97,13 @@ const duracionDelete = async (req = request, res = response) => {
 
 }
 
-const duracionGet = async (req = request, res = response) => {
+const tipo_sancionGet = async (req = request, res = response) => {
 
     try {
 
-        const duracion = await Duracion.find();
+        const tipo_sancion = await Tipo_sancion.find();
 
-        return res.json(duracion)
+        return res.json(tipo_sancion)
 
     } catch (error) {
 
@@ -116,8 +116,8 @@ const duracionGet = async (req = request, res = response) => {
 
 
 module.exports = {
-    duracionPost,
-    duracionPut,
-    duracionDelete,
-    duracionGet
+    tipo_sancionPost,
+    tipo_sancionPut,
+    tipo_sancionDelete,
+    tipo_sancionGet
 }

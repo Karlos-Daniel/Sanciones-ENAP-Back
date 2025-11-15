@@ -4,10 +4,14 @@ const Persona = require('./personaModel');
 const Compania = require('./companiaModel')
 const Duracion = require('./duracion_sancionModel')
 const Rol = require('./rolModel')
-
+const Tipo_sancion = require('./tipo_sancionModel')
+const Grado = require('./gradoModel')
+ 
 module.exports ={
     Compania,
     Rol,
     Duracion,
     Persona,
+    Tipo_sancion,
+    Grado
 }

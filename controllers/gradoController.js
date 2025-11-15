@@ -1,20 +1,14 @@
-const { response, request } = require("express");
-const { Duracion } = require('../models');
+    const { response, request } = require("express");
+const { Grado } = require('../models');
 const {validationResult} = require('express-validator');
 const moment = require('moment')
 
-const duracionPost = async (req = request, res = response) => {
+const gradoPost = async (req = request, res = response) => {
     try {
         const {
             descripcion
         } = req.body
  
-        const duracionValidas = [1,2,3,4,5,6,7,8,"DIA"]
-        if(!duracionValidas.includes(descripcion)){
-            return res.status(400).json({errores:
-                [{msg:'no es una duracion valida'}]
-            })
-        }
         //const dateMoment = new Date(fecha)
         //const fechaMoment = moment(dateMoment).format('MM/DD/YYYY');    
            
@@ -22,12 +16,12 @@ const duracionPost = async (req = request, res = response) => {
             descripcion
         }
 
-        const duracion = new Duracion(data)
+        const grado = new Grado(data)
 
-        await duracion.save()
+        await grado.save()
 
         return res.status(201).json({
-            msg:'duracion creado con exito'
+            msg:'Grado creado con exito'
         })
 
     } catch (error) {
@@ -39,7 +33,7 @@ const duracionPost = async (req = request, res = response) => {
 }
 
 //editar
-const duracionPut = async (req = request, res = response) => {
+const gradoPut = async (req = request, res = response) => {
     try {
 
         const { _id } = req.params;
@@ -61,7 +55,7 @@ const duracionPut = async (req = request, res = response) => {
             descripcion
         }
 
-       await Duracion.findByIdAndUpdate(_id,data)
+       await Grado.findByIdAndUpdate(_id,data)
 
         return res.status(201).json({
             msg:'Rol modificada con exito'
@@ -76,12 +70,12 @@ const duracionPut = async (req = request, res = response) => {
 }
 
 //borrar
-const duracionDelete = async (req = request, res = response) => {
+const gradoDelete = async (req = request, res = response) => {
 
     try {
         const { _id } = req.params;
 
-        await Compania.findByIdAndDelete(_id);
+        await Grado.findByIdAndDelete(_id);
 
         return res.status(200).json({
             msg: `Rol borrada con exito`
@@ -97,13 +91,13 @@ const duracionDelete = async (req = request, res = response) => {
 
 }
 
-const duracionGet = async (req = request, res = response) => {
+const gradoGet = async (req = request, res = response) => {
 
     try {
 
-        const duracion = await Duracion.find();
+        const grado = await Grado.find();
 
-        return res.json(duracion)
+        return res.json(grado)
 
     } catch (error) {
 
@@ -116,8 +110,8 @@ const duracionGet = async (req = request, res = response) => {
 
 
 module.exports = {
-    duracionPost,
-    duracionPut,
-    duracionDelete,
-    duracionGet
+    gradoPost,
+    gradoPut,
+    gradoDelete,
+    gradoGet
 }

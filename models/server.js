@@ -4,9 +4,13 @@ const cors = require('cors');
 const fileUpload = require('express-fileupload');
 const {dbConnection} = require('../database/config');
 const routesCompania = require('../routes/compania.routes')
+const routesDuracion = require('../routes/duracion.routes')
 const routesRol = require('../routes/rol.routes')
 const routesUsuario = require('../routes/usuario.routes')
 const routesLogin = require('../routes/login.routes');
+const routestipo_sanciones = require('../routes/tipo_sanciones.routes');
+const routesGrado = require("../routes/grado.routes")
+
 
 class server{
     constructor(){
@@ -44,6 +48,9 @@ class server{
         this.app.use(routesRol);
         this.app.use(routesUsuario);
         this.app.use(routesLogin);
+        this.app.use(routesDuracion)
+        this.app.use(routestipo_sanciones)
+        this.app.use(routesGrado)
         
     }
 
