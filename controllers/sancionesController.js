@@ -1,6 +1,8 @@
 const { response, request } = require("express");
 const { Sanciones } = require('../models');
 const {validationResult} = require('express-validator');
+const { isValidObjectId } = require('mongoose');
+
 const moment = require('moment')
 
 // const sancionesPost = async (req = request, res = response) => {
@@ -47,7 +49,6 @@ const moment = require('moment')
 // }
 const sancionesPost = async (req = request, res = response) => {
     try {
-        console.log("1");
         
         const {
             ID_alumno,
@@ -56,22 +57,21 @@ const sancionesPost = async (req = request, res = response) => {
             ID_duracion_sancion,
             fecha,
         } = req.body;
-console.log("2");
         // Validar IDs individualmente
-        // if (
-        //     !isValidObjectId(ID_alumno) ||
-        //     !isValidObjectId(ID_autoridad) ||
-        //     !isValidObjectId(ID_tipo_sancion) ||
-        //     !isValidObjectId(ID_duracion_sancion)
-        // ) {
-        //     return res.status(400).json({
-        //         errores: [{
-        //             msg: `Uno o más IDs no son válidos`
-        //         }]
-        //     });
-        // }
+         if (
+             !isValidObjectId(ID_alumno) ||
+             !isValidObjectId(ID_autoridad) ||
+             !isValidObjectId(ID_tipo_sancion) ||
+             !isValidObjectId(ID_duracion_sancion)
+         ) {
+             return res.status(400).json({
+                errores: [{
+                     msg: `Uno o más IDs no son válidos`
+                 }]
+             });
+         }
 
-        // Convertir fecha correctamente
+        //Convertir fecha correctamente
         const fechaMoment = moment(fecha).toDate();
 console.log("3");
         const data = {
