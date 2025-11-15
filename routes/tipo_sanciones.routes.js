@@ -10,8 +10,8 @@ const router = Router();
 
 //router.post('/restaurante',errores,restaurantePost)
 router.post('/tipo_sancionPost',tipo_sancionPost)
-router.put('/tipo_sancionPost',tipo_sancionPut)
-router.delete('/tipo_sancionPost',tipo_sancionDelete)
-router.get('/tipo_sancionPost',tipo_sancionGet)
+router.put('/tipo_sancionPut',tipo_sancionPut)
+router.delete('/tipo_sancionDelete',tipo_sancionDelete)
+router.get('/tipo_sancionGet',tipo_sancionGet)
 
 module.exports = router;

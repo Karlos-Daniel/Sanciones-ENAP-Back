@@ -15,10 +15,10 @@ const camposVacios = [
 ]
 
 
-router.get('/rolPost',rolGet)
+router.get('/rolGet',rolGet)
 router.post('/rolPost',rolPost)
-router.put('/rolPost',rolPut)
-router.delete('/rolPost',rolDelete)
+router.put('/rolPut',rolPut)
+router.delete('/rolDelete',rolDelete)
 
 
 module.exports = router;

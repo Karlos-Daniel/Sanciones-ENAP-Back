@@ -10,8 +10,8 @@ const router = Router();
 
 //router.post('/restaurante',errores,restaurantePost)
 router.post('/companiaPost',companiaPost)
-router.put('/companiaPost',companiaPut)
-router.delete('/companiaPost',companiaDelete)
-router.get('/companiaPost',companiaGet)
+router.put('/companiaPut',companiaPut)
+router.delete('/companiaDelete',companiaDelete)
+router.get('/companiaGet',companiaGet)
 
 module.exports = router;
