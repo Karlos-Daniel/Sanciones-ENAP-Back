@@ -43,6 +43,10 @@ const personaSchema = Schema({
         enum:[1,2,3],
         require: true 
     },
+    password:{
+        type: String,
+        require: true
+    }
       
 });
 

@@ -60,32 +60,38 @@ const usuariosPost = async(req = request, res = response)=>{
         res.status(500);
     }
  }
- const usuariosPut = async(req = request, res = response)=>{
+ const usuariosPut = async (req = request, res = response) => {
     try {
-        
-        const {_id} = req.params;
+        const { _id } = req.params;
 
         const errors = validationResult(req);
-        
-        if(!errors.isEmpty()){
+
+        if (!errors.isEmpty()) {
             return res.status(400).json({
                 errores: errors.array()
-            })
+            });
         }
 
-        if(!isValidObjectId(_id)){
-            return res.status(400).json({errores:[{
-                msg:`este id: ${_id} no es de mongo`
-            }]})
+        // Validar ID
+        if (!isValidObjectId(_id)) {
+            return res.status(400).json({
+                errores: [{
+                    msg: `El ID ${_id} no es válido`
+                }]
+            });
         }
-        const existe = await Usuario.findById(_id)
-        
-        if(!existe){
-            return res.status(400).json({errores:[{
-                msg:`Ese id no pertence a ningun usuario`
-            }]})
-        } 
-        
+
+        const existe = await Usuario.findById(_id);
+
+        if (!existe) {
+            return res.status(400).json({
+                errores: [{
+                    msg: `No existe un usuario con el ID ${_id}`
+                }]
+            });
+        }
+
+        // Campos que sí pueden actualizarse
         const {
             nombre1,
             nombre2,
@@ -96,9 +102,10 @@ const usuariosPost = async(req = request, res = response)=>{
             grado,
             compañia,
             guardia,
-            password} = req.body
+            password
+        } = req.body;
 
-            const data ={
+        const data = {
             nombre1,
             nombre2,
             apellido1,
@@ -107,26 +114,30 @@ const usuariosPost = async(req = request, res = response)=>{
             rol,
             grado,
             compañia,
-            guardia,
-            password
-            }
-            
-       
-            //Encriptar contraseña
-             const salt =  brcryptjs.genSaltSync();
-             data.password = brcryptjs.hashSync(password,salt);
-             await Usuario.findByIdAndUpdate(id, data);
-            
+            guardia
+        };
+
+        // Si envía contraseña, entonces se encripta
+        if (password) {
+            const salt = bcryptjs.genSaltSync();
+            data.password = bcryptjs.hashSync(password, salt);
+        }
+
+        await Usuario.findByIdAndUpdate(_id, data, { new: true });
+
         return res.json({
-            msg: 'Ha sido cambiado con exito',
+            msg: 'Usuario actualizado con éxito',
             data
-        })
+        });
 
     } catch (error) {
         console.log(error);
-        res.status(500);
+        return res.status(500).json({
+            msg: 'Error interno en el servidor'
+        });
     }
- }
+};
+
 
  const usuariosDelete = async(req = request, res = response)=>{
 try {

@@ -9,7 +9,7 @@ const {validationResult} = require('express-validator');
 const login = async(req= request, res= response)=>{
     
     try {
-        const {correo,password} = req.body;
+        const {cc,password} = req.body;
 
         const errors = validationResult(req);
         
@@ -20,7 +20,7 @@ const login = async(req= request, res= response)=>{
         }
 
         //Verificar si el email existe
-        const persona = await Persona.findOne({correo})
+        const persona = await Persona.findOne({cc})
             
         if(!persona){
             return res.status(400).json({errores:[{
