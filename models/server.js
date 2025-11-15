@@ -10,7 +10,7 @@ const routesUsuario = require('../routes/usuario.routes')
 const routesLogin = require('../routes/login.routes');
 const routestipo_sanciones = require('../routes/tipo_sanciones.routes');
 const routesGrado = require("../routes/grado.routes")
-const routesSanciones = require("../models/sancionesModel")
+const routesSanciones = require("../routes/sanciones.routes")
 
 
 class server{
