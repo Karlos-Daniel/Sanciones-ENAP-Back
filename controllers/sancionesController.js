@@ -56,18 +56,18 @@ const sancionesPost = async (req = request, res = response) => {
         } = req.body;
 
         // Validar IDs individualmente
-        if (
-            !isValidObjectId(ID_alumno) ||
-            !isValidObjectId(ID_autoridad) ||
-            !isValidObjectId(ID_tipo_sancion) ||
-            !isValidObjectId(ID_duracion_sancion)
-        ) {
-            return res.status(400).json({
-                errores: [{
-                    msg: `Uno o más IDs no son válidos`
-                }]
-            });
-        }
+        // if (
+        //     !isValidObjectId(ID_alumno) ||
+        //     !isValidObjectId(ID_autoridad) ||
+        //     !isValidObjectId(ID_tipo_sancion) ||
+        //     !isValidObjectId(ID_duracion_sancion)
+        // ) {
+        //     return res.status(400).json({
+        //         errores: [{
+        //             msg: `Uno o más IDs no son válidos`
+        //         }]
+        //     });
+        // }
 
         // Convertir fecha correctamente
         const fechaMoment = moment(fecha).toDate();
