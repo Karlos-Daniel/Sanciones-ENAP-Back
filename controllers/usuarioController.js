@@ -20,25 +20,25 @@ const usuariosPost = async(req = request, res = response)=>{
             
             const errors = validationResult(req);
         
-            if(!errors.isEmpty()){
-                return res.status(400).json({
-                    errores: errors.array()
-                })
-            }
 
-            const emailValido = Usuario.find({correo})
+            const ccValido = Usuario.find({cc})
 
-            if(!emailValido){
+            if(!ccValido){
                 return res.status(400).json({errores:[{
-                    msg:'Ya este email se encuentra registrado'
+                    msg:'Ya ests cc se encuentra registrado'
                 }]})
             }
             
             const data ={
-                nombre1,
-                apellido1,          
-                correo,
-                password
+            nombre1,
+            apellido1,
+            apellido2,
+            cc,
+            rol,
+            grado,
+            compañia,
+            guardia,
+            password
             }
             
             const usuario = new Usuario(data);
@@ -87,14 +87,24 @@ const usuariosPost = async(req = request, res = response)=>{
         const {
             nombre1,
             apellido1,
-            correo,
+            apellido2,
+            cc,
+            rol,
+            grado,
+            compañia,
+            guardia,
             password} = req.body
 
             const data ={
-                nombre1,          
-                apellido1,
-                correo,
-                password
+            nombre1,
+            apellido1,
+            apellido2,
+            cc,
+            rol,
+            grado,
+            compañia,
+            guardia,
+            password
             }
             
        
@@ -153,7 +163,20 @@ try {
 }
 }
 
+const usuariosGet = async(req = request, res = response)=>{
+    try {
+        const usuarios = await Usuario.find({})
+        
+        return res.json(usuarios)
+
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json(error)
+        
+    }
+}
 module.exports = {
+    usuariosGet,
     usuariosPut,
     usuariosDelete,
     usuariosPost

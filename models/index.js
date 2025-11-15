@@ -6,6 +6,7 @@ const Duracion = require('./duracion_sancionModel')
 const Rol = require('./rolModel')
 const Tipo_sancion = require('./tipo_sancionModel')
 const Grado = require('./gradoModel')
+const Sanciones = require('./sancionesModel')
  
 module.exports ={
     Compania,
