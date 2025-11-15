@@ -10,7 +10,12 @@ const usuariosPost = async(req = request, res = response)=>{
         
       const {nombre1,
             apellido1,
-            correo,
+            apellido2,
+            cc,
+            rol,
+            grado,
+            compañia,
+            guardia,
             password} = req.body;
             
             const errors = validationResult(req);
