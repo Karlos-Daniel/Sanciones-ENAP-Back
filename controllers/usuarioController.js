@@ -9,6 +9,7 @@ const usuariosPost = async(req = request, res = response)=>{
     try {
         
       const {nombre1,
+            nombre2,
             apellido1,
             apellido2,
             cc,
@@ -31,6 +32,7 @@ const usuariosPost = async(req = request, res = response)=>{
             
             const data ={
             nombre1,
+            nombre2,
             apellido1,
             apellido2,
             cc,
@@ -86,6 +88,7 @@ const usuariosPost = async(req = request, res = response)=>{
         
         const {
             nombre1,
+            nombre2,
             apellido1,
             apellido2,
             cc,
@@ -97,6 +100,7 @@ const usuariosPost = async(req = request, res = response)=>{
 
             const data ={
             nombre1,
+            nombre2,
             apellido1,
             apellido2,
             cc,

@@ -119,7 +119,7 @@ const sancionesGet = async (req = request, res = response) => {
 
     try {
 
-        const sanciones = await Sanciones.find();
+        const sanciones = await Sanciones.find({});
 
         return res.json(sanciones)
 

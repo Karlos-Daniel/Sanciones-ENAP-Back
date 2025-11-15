@@ -9,7 +9,7 @@ const tipo_sancionPost = async (req = request, res = response) => {
             descripcion
         } = req.body
  
-        const tipo_sancionValidas = [1,2,3,4,5,6,7,8,"DIA"]
+        const tipo_sancionValidas = ["HTE","HDM","HAF","DTE"]
         if(!tipo_sancionValidas.includes(descripcion)){
             return res.status(400).json({errores:
                 [{msg:'no es una duracion valida'}]
