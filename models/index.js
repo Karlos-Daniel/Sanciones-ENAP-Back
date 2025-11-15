@@ -10,6 +10,7 @@ const Sanciones = require('./sancionesModel')
  
 module.exports ={
     Compania,
+    Sanciones,
     Rol,
     Duracion,
     Persona,

@@ -1,6 +1,8 @@
 const { response, request } = require("express");
 const { Sanciones } = require('../models');
 const {validationResult} = require('express-validator');
+const { isValidObjectId } = require('mongoose');
+
 const moment = require('moment')
 
 // const sancionesPost = async (req = request, res = response) => {
@@ -47,6 +49,7 @@ const moment = require('moment')
 // }
 const sancionesPost = async (req = request, res = response) => {
     try {
+        
         const {
             ID_alumno,
             ID_autoridad,
@@ -54,24 +57,23 @@ const sancionesPost = async (req = request, res = response) => {
             ID_duracion_sancion,
             fecha,
         } = req.body;
-
         // Validar IDs individualmente
-        // if (
-        //     !isValidObjectId(ID_alumno) ||
-        //     !isValidObjectId(ID_autoridad) ||
-        //     !isValidObjectId(ID_tipo_sancion) ||
-        //     !isValidObjectId(ID_duracion_sancion)
-        // ) {
-        //     return res.status(400).json({
-        //         errores: [{
-        //             msg: `Uno o más IDs no son válidos`
-        //         }]
-        //     });
-        // }
+         if (
+             !isValidObjectId(ID_alumno) ||
+             !isValidObjectId(ID_autoridad) ||
+             !isValidObjectId(ID_tipo_sancion) ||
+             !isValidObjectId(ID_duracion_sancion)
+         ) {
+             return res.status(400).json({
+                errores: [{
+                     msg: `Uno o más IDs no son válidos`
+                 }]
+             });
+         }
 
-        // Convertir fecha correctamente
+        //Convertir fecha correctamente
         const fechaMoment = moment(fecha).toDate();
-
+console.log("3");
         const data = {
             ID_alumno,
             ID_autoridad,
@@ -79,9 +81,11 @@ const sancionesPost = async (req = request, res = response) => {
             ID_duracion_sancion,
             fecha: fechaMoment,   // ← Ahora sí se guarda bien en Mongo
         };
-
+console.log("4");
         const sancion = new Sanciones(data);
+        console.log("5");
         await sancion.save();
+        console.log("6");
 
         return res.status(201).json({
             msg: 'Sanción creada con éxito',
