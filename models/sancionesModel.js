@@ -14,7 +14,7 @@ const sancionesSchema = Schema({
     },
      ID_tipo_sancion:{
         type: String,
-        ref:"Tipo_sancion",
+        ref:"Tipo_Sancion",
         required: [true, "El ID de del tipo sancion es obligatorio"],
     },
     ID_duracion_sancion:{

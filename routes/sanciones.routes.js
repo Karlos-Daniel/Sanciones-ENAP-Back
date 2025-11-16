@@ -5,7 +5,8 @@ const {validarJWT} = require('../middlewares/validar-jwt');
 const { sancionesPost,
     sancionesPut,
     sancionesDelete,
-    sancionesGet} = require('../controllers/sancionesController');
+    sancionesGet,
+sancionesCompanias} = require('../controllers/sancionesController');
 
 
 const router = Router();
@@ -19,6 +20,8 @@ router.get('/sancionesGet',sancionesGet)
 router.post('/sancionesPost',sancionesPost)
 router.put('/sancionesPut',sancionesPut)
 router.delete('/sancionesDelete',sancionesDelete)
+
+router.get('/sancionesCompanias/:companiaID',sancionesCompanias)
 
 
 module.exports = router;

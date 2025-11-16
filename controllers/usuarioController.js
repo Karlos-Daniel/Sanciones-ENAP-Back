@@ -15,7 +15,7 @@ const usuariosPost = async(req = request, res = response)=>{
             cc,
             rol,
             grado,
-            compañia,
+            compania,
             guardia,
             password} = req.body;
             
@@ -38,7 +38,7 @@ const usuariosPost = async(req = request, res = response)=>{
             cc,
             rol,
             grado,
-            compañia,
+            compania,
             guardia,
             password
             }
@@ -100,7 +100,7 @@ const usuariosPost = async(req = request, res = response)=>{
             cc,
             rol,
             grado,
-            compañia,
+            compania,
             guardia,
             password
         } = req.body;
@@ -113,7 +113,7 @@ const usuariosPost = async(req = request, res = response)=>{
             cc,
             rol,
             grado,
-            compañia,
+            compania,
             guardia
         };
 

@@ -1,5 +1,5 @@
 const { response, request } = require("express");
-const { Sanciones } = require('../models');
+const { Sanciones,Persona, Compania } = require('../models');
 const {validationResult} = require('express-validator');
 const { isValidObjectId } = require('mongoose');
 
@@ -187,10 +187,41 @@ const sancionesGet = async (req = request, res = response) => {
 
 }
 
+const sancionesCompanias = async (req, res) => {
+  try {
+    const { companiaID } = req.params;
+
+    // 1. Obtener alumnos que pertenecen a esa compañía
+    const alumnos = await Persona.find({ compania: companiaID }).select("_id");
+
+    const idsAlumnos = alumnos.map(a => a._id);
+    console.log(idsAlumnos);
+    
+    // 2. Obtener sanciones de esos alumnos
+    const sanciones = await Sanciones.find({ ID_alumno: { $in: idsAlumnos } })
+      .populate({
+        path: "ID_alumno",
+        select: "nombre1 apellido1 apellido2 guardia compania",
+        populate: { path: "compania", select: "descripcion" }
+      })
+      .populate("ID_autoridad", "nombre1 apellido1 apellido2 grado")
+       .populate("ID_tipo_sancion","descripcion")
+       .populate("ID_duracion_sancion", "descripcion");
+
+    res.json(sanciones);
+
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ msg: "Error al obtener sanciones por compañía" });
+  }
+};
+
+
 
 module.exports = {
     sancionesPost,
     sancionesPut,
     sancionesDelete,
+    sancionesCompanias,
     sancionesGet
 }

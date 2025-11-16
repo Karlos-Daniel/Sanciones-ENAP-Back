@@ -1,5 +1,5 @@
 const { response, request } = require("express");
-const { Compania } = require('../models');
+const { Compania, Persona } = require('../models');
 const {validationResult} = require('express-validator');
 
 const companiaPost = async (req = request, res = response) => {
@@ -112,6 +112,13 @@ const companiaGet = async (req = request, res = response) => {
     }
 
 }
+const cadetes_companiasGet = async (req = request, res = response) => {
+    
+    const compania_ID_params = req.params
+
+    const cadetesCompania = await Persona.find({compania:compania_ID_params})
+}
+
 
 
 module.exports = {
