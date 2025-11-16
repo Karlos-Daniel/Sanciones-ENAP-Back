@@ -1,6 +1,6 @@
 const{ Router }= require('express');
 const {validarJWT} = require('../middlewares/validar-jwt')
-const {usuariosPost,usuariosDelete,usuariosPut, usuariosGet}=require('../controllers/usuarioController');
+const {usuariosPost,usuariosDelete,usuariosPut, usuariosGet, getCadetesPorCompania}=require('../controllers/usuarioController');
 const {check: body} = require('express-validator');
 
 const router = Router();
@@ -17,6 +17,8 @@ router.post('/usuario',usuariosPost);
 router.put('/usuario/:_id',usuariosPut);
 
 router.delete('/usuario/:_id',usuariosDelete);
+
+router.get('/cd-companias/:companiaID',getCadetesPorCompania)
 
 
 

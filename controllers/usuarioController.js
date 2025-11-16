@@ -190,9 +190,31 @@ const usuariosGet = async(req = request, res = response)=>{
         
     }
 }
+
+const getCadetesPorCompania = async (req, res) => {
+  try {
+    const { companiaID } = req.params;
+
+    const cadetes = await Usuario.find({ compania: companiaID })
+      .populate("compania", "descripcion")
+  .populate({
+    path: "grado",
+    select: "descripcion"
+  })
+  .select("nombre1 apellido1 apellido2 grado guardia compania");
+
+    res.json(cadetes);
+
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ msg: "Error al obtener cadetes por compañía" });
+  }
+};
+
 module.exports = {
     usuariosGet,
     usuariosPut,
     usuariosDelete,
+    getCadetesPorCompania,
     usuariosPost
 }

@@ -6,7 +6,8 @@ const { sancionesPost,
     sancionesPut,
     sancionesDelete,
     sancionesGet,
-sancionesCompanias} = require('../controllers/sancionesController');
+sancionesCompanias,
+getSancionesPorCadete} = require('../controllers/sancionesController');
 
 
 const router = Router();
@@ -20,7 +21,7 @@ router.get('/sancionesGet',sancionesGet)
 router.post('/sancionesPost',sancionesPost)
 router.put('/sancionesPut',sancionesPut)
 router.delete('/sancionesDelete',sancionesDelete)
-
+router.get('/sanciones-cd/:cadeteID',getSancionesPorCadete)
 router.get('/sancionesCompanias/:companiaID',sancionesCompanias)
 
 

@@ -204,7 +204,14 @@ const sancionesCompanias = async (req, res) => {
         select: "nombre1 apellido1 apellido2 guardia compania",
         populate: { path: "compania", select: "descripcion" }
       })
-      .populate("ID_autoridad", "nombre1 apellido1 apellido2 grado")
+      .populate({
+    path: "ID_autoridad",
+    select: "nombre1 apellido1 apellido2 grado",
+    populate: {
+      path: "grado",
+      select: "descripcion"
+    }
+  })
        .populate("ID_tipo_sancion","descripcion")
        .populate("ID_duracion_sancion", "descripcion");
 
@@ -216,6 +223,40 @@ const sancionesCompanias = async (req, res) => {
   }
 };
 
+const getSancionesPorCadete = async (req, res) => {
+  try {
+    const { cadeteID } = req.params;
+
+    // 1. Buscar sanciones donde el alumno sea el cadete enviado
+    const sanciones = await Sanciones.find({ ID_alumno: cadeteID })
+      .populate({
+        path: "ID_alumno",
+        select: "nombre1 apellido1 apellido2 guardia compania grado",
+        populate: [
+          { path: "compania", select: "descripcion" },
+          { path: "grado", select: "descripcion" }
+        ]
+      })
+      .populate({
+        path: "ID_autoridad",
+        select: "nombre1 apellido1 apellido2 grado",
+        populate: {
+          path: "grado",
+          select: "descripcion"
+        }
+      })
+      .populate("ID_tipo_sancion", "descripcion")
+      .populate("ID_duracion_sancion", "descripcion");
+
+    res.json(sanciones);
+
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ msg: "Error al obtener sanciones del cadete" });
+  }
+};
+
+
 
 
 module.exports = {
@@ -223,5 +264,6 @@ module.exports = {
     sancionesPut,
     sancionesDelete,
     sancionesCompanias,
+    getSancionesPorCadete,
     sancionesGet
 }
