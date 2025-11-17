@@ -1,5 +1,5 @@
 const{response,request}= require('express');
-const Usuario = require('../models/personaModel')
+const {Persona} = require('../models')
 const {isValidObjectId}=require('mongoose')
 const {validationResult} = require('express-validator');
 const brcryptjs = require('bcryptjs');
@@ -195,8 +195,9 @@ const getCadetesPorCompania = async (req, res) => {
   try {
     const { companiaID } = req.params;
 
-    const cadetes = await Usuario.find({ compania: companiaID })
-      .populate("compania", "descripcion","rol")
+    const cadetes = await Persona.find({ compania: companiaID })
+      .populate("compania", "descripcion")
+      .populate("rol","descripcion")
       .select("nombre1 nombre2 apellido1 apellido2 grado guardia compania rol cc");
 
     res.json(cadetes);
