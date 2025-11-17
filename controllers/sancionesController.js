@@ -2,6 +2,8 @@ const { response, request } = require("express");
 const { Sanciones,Persona, Compania } = require('../models');
 const {validationResult} = require('express-validator');
 const { isValidObjectId } = require('mongoose');
+const mongoose = require("mongoose");
+
 
 const moment = require('moment')
 
@@ -188,46 +190,76 @@ const sancionesGet = async (req = request, res = response) => {
 }
 
 const sancionesCompanias = async (req, res) => {
-  try {
-    const { companiaID } = req.params;
+    try {
+        const { companiaID } = req.params;
 
-    // 1. Obtener alumnos que pertenecen a esa compañía
-    const alumnos = await Persona.find({ compania: companiaID }).select("_id");
+        // Validar ID
+        if (!mongoose.Types.ObjectId.isValid(companiaID)) {
+            return res.status(400).json({
+                msg: "ID de compañía no válido"
+            });
+        }
 
-    const idsAlumnos = alumnos.map(a => a._id);
-    console.log(idsAlumnos);
-    
-    // 2. Obtener sanciones de esos alumnos
-    const sanciones = await Sanciones.find({ ID_alumno: { $in: idsAlumnos } })
-      .populate({
-        path: "ID_alumno",
-        select: "nombre1 apellido1 apellido2 guardia compania",
-        populate: { path: "compania", select: "descripcion" }
-      })
-      .populate({
-    path: "ID_autoridad",
-    select: "nombre1 apellido1 apellido2 grado",
-    populate: {
-      path: "grado",
-      select: "descripcion"
+        // Verificar que la compañía exista
+        const compania = await Compania.findById(companiaID);
+        if (!compania) {
+            return res.status(404).json({
+                msg: "Compañía no encontrada"
+            });
+        }
+
+        // 1️⃣ Obtener todos los cadetes de la compañía
+        const cadetes = await Persona.find({ compania: companiaID })
+            .populate('grado')
+            .lean();
+
+        // Si no hay cadetes
+        if (cadetes.length === 0) {
+            return res.json({
+                compania: compania.nombre,
+                cadetes: []
+            });
+        }
+
+        // 2️⃣ Mapear cadetes y obtener sanciones de cada uno
+        const resultado = await Promise.all(
+            cadetes.map(async cadete => {
+
+                const sanciones = await Sanciones.find({ persona_id: cadete.uid })
+                    .populate('ID_tipo_sancion')
+                    .lean();
+
+                return {
+                    cadete: `${cadete.nombre1} ${cadete.nombre2} ${cadete.apellido1} ${cadete.apellido2}`,
+                    grado: cadete.grado ? cadete.grado.nombre : "Sin grado",
+                    guardia: cadete.guardia,
+                    total_sanciones: sanciones.length,
+                    sanciones
+                };
+            })
+        );
+
+        // 3️⃣ Respuesta final
+        res.json({
+            compania: compania.nombre,
+            cadetes: resultado
+        });
+
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({
+            msg: "Error en el servidor"
+        });
     }
-  })
-       .populate("ID_tipo_sancion","descripcion")
-       .populate("ID_duracion_sancion", "descripcion");
-
-    res.json(sanciones);
-
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ msg: "Error al obtener sanciones por compañía" });
-  }
 };
+
+
 
 const getSancionesPorCadete = async (req, res) => {
   try {
     const { cadeteID } = req.params;
 
-    // 1. Buscar sanciones donde el alumno sea el cadete enviado
+    // 1. Obtener TODAS las sanciones del cadete
     const sanciones = await Sanciones.find({ ID_alumno: cadeteID })
       .populate({
         path: "ID_alumno",
@@ -240,21 +272,39 @@ const getSancionesPorCadete = async (req, res) => {
       .populate({
         path: "ID_autoridad",
         select: "nombre1 apellido1 apellido2 grado",
-        populate: {
-          path: "grado",
-          select: "descripcion"
-        }
+        populate: { path: "grado", select: "descripcion" }
       })
       .populate("ID_tipo_sancion", "descripcion")
       .populate("ID_duracion_sancion", "descripcion");
 
-    res.json(sanciones);
+    if (!sanciones.length) {
+      return res.json({
+        msg: "El cadete no tiene sanciones registradas.",
+        total_sanciones: 0,
+        sanciones: []
+      });
+    }
+
+    // 2. Construir el objeto agrupado
+    const alumno = sanciones[0].ID_alumno;
+
+    const respuesta = {
+      alumno: `${alumno.nombre1} ${alumno.apellido1} ${alumno.apellido2}`,
+      compania: alumno.compania?.descripcion,
+      grado: alumno.grado?.descripcion,
+      guardia: alumno.guardia,
+      total_sanciones: sanciones.length,
+      sanciones: sanciones
+    };
+
+    res.json(respuesta);
 
   } catch (error) {
     console.error(error);
-    res.status(500).json({ msg: "Error al obtener sanciones del cadete" });
+    res.status(500).json({ msg: "Error al obtener sanciones agrupadas del cadete" });
   }
 };
+
 
 
 
