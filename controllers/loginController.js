@@ -35,12 +35,23 @@ const login = async(req= request, res= response)=>{
                 msg: 'Contraseña incorrecta'
             }]})
         }
-        console.log(persona._id);
-        const token = await generarJWT(persona._id);
+        console.log(persona.rol);
+        
+        console.log(persona.grado !="6917c83357c3ad08b23a3427");
+        if(persona.rol != '6917a498a6e72c593fa17998'){
+            const token = await generarJWT(persona._id);
             res.json({
                 token,
                 ID_autoridad:persona._id
             })
+        }else{
+            const token = await generarJWT(persona._id);
+            res.json({
+                token,
+                ID_Alumno:persona._id
+            })
+        }
+        
         
     } catch (error) {
         console.log(error);

@@ -81,7 +81,7 @@ const usuariosPost = async(req = request, res = response)=>{
             });
         }
 
-        const existe = await Usuario.findById(_id);
+        const existe = await Persona.findById(_id);
 
         if (!existe) {
             return res.status(400).json({
@@ -123,7 +123,7 @@ const usuariosPost = async(req = request, res = response)=>{
             data.password = bcryptjs.hashSync(password, salt);
         }
 
-        await Usuario.findByIdAndUpdate(_id, data, { new: true });
+        await Persona.findByIdAndUpdate(_id, data, { new: true });
 
         return res.json({
             msg: 'Usuario actualizado con éxito',
@@ -180,7 +180,7 @@ try {
 
 const usuariosGet = async(req = request, res = response)=>{
     try {
-        const usuarios = await Usuario.find({})
+        const usuarios = await Persona.find({})
         
         return res.json(usuarios)
 
