@@ -198,6 +198,7 @@ const getCadetesPorCompania = async (req, res) => {
     const cadetes = await Persona.find({ compania: companiaID })
       .populate("compania", "descripcion")
       .populate("rol","descripcion")
+      .populate("grado","descripcion")
       .select("nombre1 nombre2 apellido1 apellido2 grado guardia compania rol cc");
 
     res.json(cadetes);
