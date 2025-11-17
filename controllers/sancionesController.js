@@ -263,7 +263,7 @@ const getSancionesPorCadete = async (req, res) => {
     const sanciones = await Sanciones.find({ ID_alumno: cadeteID })
       .populate({
         path: "ID_alumno",
-        select: "nombre1 apellido1 apellido2 guardia compania grado",
+        select: "nombre1 apellido1 apellido2 guardia compania grado cc",
         populate: [
           { path: "compania", select: "descripcion" },
           { path: "grado", select: "descripcion" }

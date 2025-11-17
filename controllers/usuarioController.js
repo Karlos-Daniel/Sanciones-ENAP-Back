@@ -197,11 +197,7 @@ const getCadetesPorCompania = async (req, res) => {
 
     const cadetes = await Usuario.find({ compania: companiaID })
       .populate("compania", "descripcion")
-  .populate({
-    path: "grado",
-    select: "descripcion"
-  })
-  .select("nombre1 apellido1 apellido2 grado guardia compania");
+      .select("nombre1 nombre2 apellido1 apellido2 grado guardia compania rol cc");
 
     res.json(cadetes);
 

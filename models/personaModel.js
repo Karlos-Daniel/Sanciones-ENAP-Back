@@ -23,7 +23,7 @@ const personaSchema = Schema({
         require: [true, 'El correo es obligatorio'],
         unique: true
     },
-    rol_id: {
+    rol: {
         type: Schema.Types.ObjectId,
         ref: 'Rol',
         require: true 
