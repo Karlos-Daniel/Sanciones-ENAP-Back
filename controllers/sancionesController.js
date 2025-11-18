@@ -107,7 +107,7 @@ console.log("4");
 const sancionesPut = async (req = request, res = response) => {
     try {
 
-        const { _id } = req.params;
+        const { sancionID } = req.params;
 
         const errors = validationResult(req);
         
@@ -136,7 +136,7 @@ const sancionesPut = async (req = request, res = response) => {
             estado
         }
 
-       await Sanciones.findByIdAndUpdate(_id,data)
+       await Sanciones.findByIdAndUpdate(sancionID,data)
 
         return res.status(201).json({
             msg:'Rol modificada con exito'
