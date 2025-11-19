@@ -20,7 +20,7 @@ const camposVacios = [
 router.get('/sancionesGet',sancionesGet)
 router.post('/sancionesPost',sancionesPost)
 router.put('/sancionesPut/:sancionID',sancionesPut)
-router.delete('/sancionesDelete',sancionesDelete)
+router.delete('/sancionesDelete/:sancionID',sancionesDelete)
 router.get('/sanciones-cd/:cadeteID',getSancionesPorCadete)
 router.get('/sancionesCompanias/:companiaID',sancionesCompanias)
 
