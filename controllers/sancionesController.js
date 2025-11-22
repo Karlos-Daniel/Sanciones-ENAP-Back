@@ -125,6 +125,7 @@ const sancionesPut = async (req = request, res = response) => {
             ID_tipo_sancion,
             ID_duracion_sancion,
             fecha,
+            observacion,
             estado
         } = req.body
 
@@ -135,6 +136,7 @@ const sancionesPut = async (req = request, res = response) => {
             ID_tipo_sancion,
             ID_duracion_sancion,
             fecha,
+            observacion,
             estado
         }
 
