@@ -29,6 +29,9 @@ const sancionesSchema = Schema({
     observacion:{
         type: String
     },
+    img:{
+        type: String
+    },
     estado:{
         type: Boolean,
         default: true,
