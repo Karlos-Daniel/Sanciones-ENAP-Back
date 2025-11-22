@@ -22,7 +22,7 @@ const usuariosPost = async(req = request, res = response)=>{
             const errors = validationResult(req);
         
 
-            const ccValido = Usuario.find({cc})
+            const ccValido = Persona.find({cc})
 
             if(!ccValido){
                 return res.status(400).json({errores:[{
@@ -43,7 +43,7 @@ const usuariosPost = async(req = request, res = response)=>{
             password
             }
             
-            const usuario = new Usuario(data);
+            const usuario = new Persona(data);
             //Encriptar contraseña
             const salt =  brcryptjs.genSaltSync();
             usuario.password = brcryptjs.hashSync(password,salt);
@@ -181,6 +181,9 @@ try {
 const usuariosGet = async(req = request, res = response)=>{
     try {
         const usuarios = await Persona.find({})
+        .populate("rol","descipcion")
+        .populate("grado","descripcion")
+        .populate("compania","descripcion")
         
         return res.json(usuarios)
 

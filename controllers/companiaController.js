@@ -8,7 +8,7 @@ const companiaPost = async (req = request, res = response) => {
             descripcion
         } = req.body
  
-        const companiasValidas = ["Binney", "Brion","Tono","Valenzuela","Padilla"]
+        const companiasValidas = ["Binney", "Brion","Tono","Valenzuela","Padilla","Cuadros"]
         if(!companiasValidas.includes(descripcion)){
             return res.status(400).json({errores:
                 [{msg:'no es un rol valido'}]

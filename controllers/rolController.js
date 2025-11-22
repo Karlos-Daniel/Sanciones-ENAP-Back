@@ -9,7 +9,9 @@ const rolPost = async (req = request, res = response) => {
             descripcion
         } = req.body
  
-        const rolValidas = ["Alumno", "Admin"]
+        const rolValidas = ["Alumno", "Admin","SuperAdmin","Admin Binney", "Admin Brion","Admin Tono",
+            "Admin Valenzuela","Admin Padilla", "Admin Cuadros"
+        ]
         if(!rolValidas.includes(descripcion)){
             return res.status(400).json({errores:
                 [{msg:'no es un rol valido'}]
