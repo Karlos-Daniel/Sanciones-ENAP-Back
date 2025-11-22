@@ -3,7 +3,7 @@ const { Sanciones,Persona, Compania } = require('../models');
 const {validationResult} = require('express-validator');
 const { isValidObjectId } = require('mongoose');
 const mongoose = require("mongoose");
-
+const {uploadFile}= require("@uploadcare/upload-client")
 
 const moment = require('moment')
 
@@ -74,6 +74,22 @@ const sancionesPost = async (req = request, res = response) => {
              });
          }
 
+// MANEJO DE ARCHIVO
+
+let fileUrl = null;
+
+if(req.file){
+    const uploadcareRespone = await uploadFile(req.file.buffer,{
+        publicKey: process.env.UPLOADCARE_PUBLIC_KEY,
+        store:"auto",
+        fileName:req.file.originalname,
+    })
+    fileUrl = uploadcareRespone.cdnUrl;
+}
+
+// MANEJO DE ARCHIVO
+
+
         //Convertir fecha correctamente
         const fechaMoment = moment(fecha).toDate();
 console.log("3");
@@ -83,6 +99,7 @@ console.log("3");
             ID_tipo_sancion,
             ID_duracion_sancion,
             observacion,
+            img:fileUrl,
             fecha: fechaMoment,   // ← Ahora sí se guarda bien en Mongo
         };
 console.log("4");
@@ -216,6 +233,7 @@ const sancionesCompanias = async (req, res) => {
         const cadetes = await Persona.find({ compania: companiaID })
             .populate('grado')
             .lean();
+    //console.log(cadetes);
 
         // Si no hay cadetes
         if (cadetes.length === 0) {
@@ -228,9 +246,11 @@ const sancionesCompanias = async (req, res) => {
         // 2️⃣ Mapear cadetes y obtener sanciones de cada uno
         const resultado = await Promise.all(
             cadetes.map(async cadete => {
+console.log(cadete._id);
 
-                const sanciones = await Sanciones.find({ persona_id: cadete.uid })
+                const sanciones = await Sanciones.find({ ID_alumno: cadete._id })
                     .populate('ID_tipo_sancion')
+                    .populate('ID_duracion_sancion')
                     .lean();
 
                 return {
@@ -280,6 +300,7 @@ const getSancionesPorCadete = async (req, res) => {
       })
       .populate("ID_tipo_sancion", "descripcion")
       .populate("ID_duracion_sancion", "descripcion");
+      
 
     if (!sanciones.length) {
       return res.json({
