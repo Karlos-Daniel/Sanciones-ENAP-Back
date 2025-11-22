@@ -181,7 +181,7 @@ try {
 const usuariosGet = async(req = request, res = response)=>{
     try {
         const usuarios = await Persona.find({})
-        .populate("rol","descipcion")
+        .populate("rol")
         .populate("grado","descripcion")
         .populate("compania","descripcion")
         
