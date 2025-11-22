@@ -26,6 +26,9 @@ const sancionesSchema = Schema({
         type: Date,
         required: [true, "La fecha es obligatoria"],
     },
+    observacion:{
+        type: String
+    },
     estado:{
         type: Boolean,
         default: true,

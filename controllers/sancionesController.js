@@ -57,6 +57,7 @@ const sancionesPost = async (req = request, res = response) => {
             ID_autoridad,
             ID_tipo_sancion,
             ID_duracion_sancion,
+            observacion,
             fecha,
         } = req.body;
         // Validar IDs individualmente
@@ -81,6 +82,7 @@ console.log("3");
             ID_autoridad,
             ID_tipo_sancion,
             ID_duracion_sancion,
+            observacion,
             fecha: fechaMoment,   // ← Ahora sí se guarda bien en Mongo
         };
 console.log("4");
